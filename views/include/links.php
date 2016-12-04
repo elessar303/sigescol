@@ -36,3 +36,6 @@
 <link rel="stylesheet" href="../plugins/pace/pace.css">
 <!-- Validation -->
 <script src="../plugins/validation/dist/jquery.validate.js"></script>
+<!-- iCheck para checkboxes y radio inputs -->
+<link rel="stylesheet" href="../plugins/iCheck/all.css">
+<script src="../plugins/iCheck/icheck.js"></script>

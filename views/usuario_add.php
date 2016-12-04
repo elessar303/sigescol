@@ -68,6 +68,13 @@ $(function () {
                 </div>
 
                 <div class="form-group">
+                  <label for="email_usuario" class="col-xs-2 col-md-2 col-lg-2 control-label">Email:</label>
+                  <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
+                    <input type="email" class="form-control" id="email_usuario" name="email_usuario" placeholder="Correo Electrónico">
+                  </div>
+                </div>
+
+                <div class="form-group">
                   <label for="rol_usuario" class="col-xs-2 col-md-2 col-lg-2 control-label">Perfil:</label>
                   <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
                     <select class="form-control select2" style="width: 100%;" name="rol_usuario">

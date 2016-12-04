@@ -2,11 +2,11 @@
 $sql="SELECT * from submodulos WHERE id_submodulo=?";
 $opt = $mysqli->rawQuery($sql,array($_GET['submod']));
 //Columnas de la Cabecera
-$columnas=array('ID', 'Login', 'Nombre', 'Apellido', 'Perfil');
+$columnas=array('ID', 'Perfil');
 //Consulta SQL
-$sql="SELECT * FROM usuarios a, perfiles b WHERE a.id_perfil=b.id_perfil";
+$sql="SELECT * FROM perfiles a";
 //Columnas a mostrar de la Consulta 
-$cols = Array ('id_usuario', 'login_usuario', 'nombre_usuario', 'apellido_usuario', 'descripcion_perfil');
+$cols = Array ('id_perfil', 'descripcion_perfil');
 //Ojo: Las columnas de la Cabecera y las Columnas a mostrar de la consulta deben ser la misma Cantidad
 $regs = $mysqli->rawQuery($sql, null, $cols);
 ?>
@@ -20,7 +20,7 @@ $(document).ready(function() {
         buttons: [
             {
             text: '<i class="fa fa-plus"></i>', 
-            titleAttr:'Agregar Usuario',
+            titleAttr:'Agregar Perfil',
             action: function ( e, dt, node, conf ) {
                     var mod = getUrlVars()["mod"];
                     var submod = getUrlVars()["submod"];
@@ -53,14 +53,13 @@ $(document).ready(function() {
         <?php foreach ($regs as $reg){?>
         <tr>
             <?php foreach ($cols as $col){?>     
-                <td><?php echo $reg[$col];?></td>
+                <td align="center"><?php echo $reg[$col];?></td>
             <?php } ?>
             <!-- Opciones para cada Registro (ver,editar,etc) -->
                 <td align="center">
-                <a title="Ver" href='?mod=<?php echo $opt[0]['id_modulo'];?>&submod=<?php echo $opt[0]['id_submodulo'];?>&opt=view&cod=<?php echo $reg['id_usuario'];?>' class="btn btn-default btn-xs"><i class="fa fa-eye"></i></a>
-                <a title="Editar" href='?mod=<?php echo $opt[0]['id_modulo'];?>&submod=<?php echo $opt[0]['id_submodulo'];?>&opt=edit&cod=<?php echo $reg['id_usuario'];?>' class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
-                <a title="Eliminar" href='?mod=<?php echo $opt[0]['id_modulo'];?>&submod=<?php echo $opt[0]['id_submodulo'];?>&opt=delete&cod=<?php echo $reg['id_usuario'];?>' class="btn btn-default btn-xs"><i class="fa fa-trash-o"></i></a>
-                <a title="Permisologia" href='?mod=<?php echo $opt[0]['id_modulo'];?>&submod=<?php echo $opt[0]['id_submodulo'];?>&opt=perm&cod=<?php echo $reg['id_usuario'];?>' class="btn btn-default btn-xs"><i class="fa fa-unlock-alt"></i></a>
+                <a title="Ver" href='?mod=<?php echo $opt[0]['id_modulo'];?>&submod=<?php echo $opt[0]['id_submodulo'];?>&opt=view&cod=<?php echo $reg['id_perfil'];?>' class="btn btn-default btn-xs"><i class="fa fa-eye"></i></a>
+                <a title="Editar" href='?mod=<?php echo $opt[0]['id_modulo'];?>&submod=<?php echo $opt[0]['id_submodulo'];?>&opt=edit&cod=<?php echo $reg['id_perfil'];?>' class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+                <a title="Eliminar" href='?mod=<?php echo $opt[0]['id_modulo'];?>&submod=<?php echo $opt[0]['id_submodulo'];?>&opt=delete&cod=<?php echo $reg['id_perfil'];?>' class="btn btn-default btn-xs"><i class="fa fa-trash-o"></i></a>
                 </td>
         </tr>
         <?php } ?>  
