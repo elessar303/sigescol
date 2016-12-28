@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 04, 2016 at 02:04 PM
+-- Generation Time: Dec 28, 2016 at 07:43 PM
 -- Server version: 5.7.11
 -- PHP Version: 7.0.4
 
@@ -67,9 +67,9 @@ INSERT INTO `opciones` (`id_opcion`, `id_submodulo`, `opt`, `archivo_opt`, `icon
 (2, 1, 'edit', 'usuario_edit.php', 'user-32.png', 'Editar Usuario', ''),
 (3, 1, 'view', 'usuario_view.php', 'user-30.png', 'Ver Usuario', ''),
 (4, 1, 'delete', 'usuario_delete.php', 'user-22.png', 'Eliminar Usuario', ''),
-(5, 3, 'add', 'permiso_add.php', 'add-1.png', 'Agregar Perfil', ''),
-(6, 3, 'edit', 'permiso_edit.php', 'edit.png', 'Editar Perfil', ''),
-(7, 3, 'view', 'permiso_view.php', 'view-1.png', 'Ver Perfil', '');
+(5, 3, 'add', 'perfil_add.php', 'add-1.png', 'Agregar Perfil', ''),
+(6, 3, 'edit', 'perfil_edit.php', 'edit.png', 'Editar Perfil', ''),
+(7, 3, 'view', 'perfil_view.php', 'view-1.png', 'Ver Perfil', '');
 
 -- --------------------------------------------------------
 
@@ -98,18 +98,61 @@ INSERT INTO `perfiles` (`id_perfil`, `descripcion_perfil`) VALUES
 
 CREATE TABLE `permisos` (
   `id_permiso` int(11) NOT NULL COMMENT 'Clave Primaria',
+  `nombre_permiso` varchar(100) NOT NULL COMMENT 'Nombre del Permiso'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `permisos`
+--
+
+INSERT INTO `permisos` (`id_permiso`, `nombre_permiso`) VALUES
+(1, 'Ver'),
+(2, 'Editar'),
+(3, 'Eliminar');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `permisos_modulos`
+--
+
+CREATE TABLE `permisos_modulos` (
+  `id_permiso_mod` int(11) NOT NULL COMMENT 'Clave Primaria',
   `id_perfil` int(11) NOT NULL COMMENT 'Clave Foranea Rol',
   `id_modulo` int(11) NOT NULL COMMENT 'Clave Foranea Modulo',
   `ver` tinyint(1) NOT NULL COMMENT 'Ver el Modulo'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Permisologia del Sistema';
 
 --
--- Dumping data for table `permisos`
+-- Dumping data for table `permisos_modulos`
 --
 
-INSERT INTO `permisos` (`id_permiso`, `id_perfil`, `id_modulo`, `ver`) VALUES
+INSERT INTO `permisos_modulos` (`id_permiso_mod`, `id_perfil`, `id_modulo`, `ver`) VALUES
 (1, 1, 1, 0),
 (2, 1, 2, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `permisos_submodulos`
+--
+
+CREATE TABLE `permisos_submodulos` (
+  `id_permiso_sub` int(11) NOT NULL COMMENT 'Clave Primaria',
+  `id_perfil` int(11) NOT NULL COMMENT 'Clave Foranea Rol',
+  `id_submodulo` int(11) NOT NULL COMMENT 'Clave Foranea Modulo',
+  `id_permiso` int(1) NOT NULL COMMENT 'Clave Foranea Permiso'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Permisologia del Sistema';
+
+--
+-- Dumping data for table `permisos_submodulos`
+--
+
+INSERT INTO `permisos_submodulos` (`id_permiso_sub`, `id_perfil`, `id_submodulo`, `id_permiso`) VALUES
+(1, 1, 1, 1),
+(2, 1, 1, 2),
+(3, 1, 2, 1),
+(4, 1, 3, 2);
 
 -- --------------------------------------------------------
 
@@ -133,7 +176,7 @@ CREATE TABLE `submodulos` (
 INSERT INTO `submodulos` (`id_submodulo`, `id_modulo`, `archivo_submodulo`, `icono_submodulo`, `nombre_submodulo`, `descripcion_submodulo`) VALUES
 (1, 1, 'usuarios.php', 'user-49.png', 'Usuarios', ''),
 (2, 1, 'parametros.php', 'settings-4.png', 'Parametros Generales', ''),
-(3, 1, 'permisos.php', 'locked-3.png', 'Permisos', '');
+(3, 1, 'perfiles.php', 'locked-3.png', 'Perfiles', '');
 
 -- --------------------------------------------------------
 
@@ -187,9 +230,24 @@ ALTER TABLE `perfiles`
 -- Indexes for table `permisos`
 --
 ALTER TABLE `permisos`
-  ADD PRIMARY KEY (`id_permiso`),
+  ADD PRIMARY KEY (`id_permiso`);
+
+--
+-- Indexes for table `permisos_modulos`
+--
+ALTER TABLE `permisos_modulos`
+  ADD PRIMARY KEY (`id_permiso_mod`),
   ADD KEY `id_rol` (`id_perfil`),
   ADD KEY `id_modulo` (`id_modulo`);
+
+--
+-- Indexes for table `permisos_submodulos`
+--
+ALTER TABLE `permisos_submodulos`
+  ADD PRIMARY KEY (`id_permiso_sub`),
+  ADD KEY `id_rol` (`id_perfil`),
+  ADD KEY `id_modulo` (`id_submodulo`),
+  ADD KEY `id_permiso` (`id_permiso`);
 
 --
 -- Indexes for table `submodulos`
@@ -229,7 +287,17 @@ ALTER TABLE `perfiles`
 -- AUTO_INCREMENT for table `permisos`
 --
 ALTER TABLE `permisos`
-  MODIFY `id_permiso` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Clave Primaria', AUTO_INCREMENT=3;
+  MODIFY `id_permiso` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Clave Primaria', AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `permisos_modulos`
+--
+ALTER TABLE `permisos_modulos`
+  MODIFY `id_permiso_mod` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Clave Primaria', AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `permisos_submodulos`
+--
+ALTER TABLE `permisos_submodulos`
+  MODIFY `id_permiso_sub` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Clave Primaria', AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `submodulos`
 --
@@ -251,11 +319,19 @@ ALTER TABLE `opciones`
   ADD CONSTRAINT `opciones_ibfk_1` FOREIGN KEY (`id_submodulo`) REFERENCES `submodulos` (`id_submodulo`);
 
 --
--- Constraints for table `permisos`
+-- Constraints for table `permisos_modulos`
 --
-ALTER TABLE `permisos`
-  ADD CONSTRAINT `permisos_ibfk_1` FOREIGN KEY (`id_perfil`) REFERENCES `perfiles` (`id_perfil`),
-  ADD CONSTRAINT `permisos_ibfk_2` FOREIGN KEY (`id_modulo`) REFERENCES `modulos` (`id_modulo`);
+ALTER TABLE `permisos_modulos`
+  ADD CONSTRAINT `permisos_modulos_ibfk_1` FOREIGN KEY (`id_perfil`) REFERENCES `perfiles` (`id_perfil`),
+  ADD CONSTRAINT `permisos_modulos_ibfk_2` FOREIGN KEY (`id_modulo`) REFERENCES `modulos` (`id_modulo`);
+
+--
+-- Constraints for table `permisos_submodulos`
+--
+ALTER TABLE `permisos_submodulos`
+  ADD CONSTRAINT `permisos_submodulos_ibfk_1` FOREIGN KEY (`id_perfil`) REFERENCES `perfiles` (`id_perfil`),
+  ADD CONSTRAINT `permisos_submodulos_ibfk_2` FOREIGN KEY (`id_submodulo`) REFERENCES `submodulos` (`id_submodulo`),
+  ADD CONSTRAINT `permisos_submodulos_ibfk_3` FOREIGN KEY (`id_permiso`) REFERENCES `permisos` (`id_permiso`);
 
 --
 -- Constraints for table `submodulos`

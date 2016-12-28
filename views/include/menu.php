@@ -1,6 +1,6 @@
 <?php
 $mysqli= new MysqliDb ();
-$sql="SELECT * from permisos a, modulos b WHERE a.id_modulo=b.id_modulo AND id_perfil=?";
+$sql="SELECT * from permisos_modulos a, modulos b WHERE a.id_modulo=b.id_modulo AND id_perfil=?";
 $permisos = $mysqli->rawQuery($sql,array($_SESSION['id_perfil']));
 ?>
 <aside class="main-sidebar">

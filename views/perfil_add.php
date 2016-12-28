@@ -63,18 +63,19 @@ $(document).ready(function(){
                           <th align="center" colspan="3">Permisos</th>
                         </tr>
                         </tr>
-                        <?php foreach ($submodulos as $submodulo) { ?>
+                        <?php foreach ($submodulos as $submodulo) { 
+                        $sql="SELECT * FROM permisos_submodulos a, permisos b WHERE a.id_permiso=b.id_permiso and id_submodulo=".$submodulo['id_submodulo']." order by id_permiso_sub";
+                        $permisos_sub = $mysqli->rawQuery($sql);
+                        ?>
                         <tr>
                           <td><?php echo $submodulo['nombre_submodulo'];?></td>
+
+                          <?php foreach ($permisos_sub as $permiso_sub) { 
+                          ?>
                           <td>
-                          <label><input type="checkbox"></label> Ver
+                          <label><input type="checkbox"></label> <?php echo $permiso_sub['nombre_permiso'];?>
                           </td>
-                          <td>
-                          <label><input type="checkbox"></label> Editar
-                          </td>
-                          <td>
-                          <label><input type="checkbox"></label> Eliminar
-                          </td>
+                          <?php }?>
                           </tr>
                         <?php } ?>
                         </table>
